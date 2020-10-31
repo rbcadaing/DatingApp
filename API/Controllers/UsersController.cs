@@ -14,7 +14,7 @@ namespace API.Controllers
     // No Need to implement here since this is already implemented in the parent API
     //  [ApiController]
     //  [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
