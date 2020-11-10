@@ -1,8 +1,7 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -13,17 +12,26 @@ import { AccountService } from '../_services/account.service';
 export class RegisterComponent implements OnInit {
   @Input() usersFromHomeComponent: any;
   @Output() cancelRegister = new EventEmitter();
-  model: any = {};
   registerForm: FormGroup;
-  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder) { }
+  maxDate: Date;
+  validationErrors: string[] = [];
+
+  constructor(private accountService: AccountService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() + 18);
   }
 
   initializeForm() {
     this.registerForm = this.fb.group({
+      gender: ["male"],
       username: ["", Validators.required],
+      knownAs: ["", Validators.required],
+      dateOfBirth: ["", Validators.required],
+      city: ["", Validators.required],
+      country: ["", Validators.required],
       password: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ["", [Validators.required, this.matchValues("password")]]
     });
@@ -36,17 +44,12 @@ export class RegisterComponent implements OnInit {
     }
   }
   register() {
-
-    console.log(this.registerForm.value);
-    // this.accountService.register(this.model)
-    //   .subscribe(response => {
-    //     this.toastr.success("Success!");
-    //     console.log(response);
-    //     this.cancel();
-    //   }, error => {
-    //     this.toastr.error(error.error);
-    //     console.log(error);
-    //   });
+    this.accountService.register(this.registerForm.value).subscribe(() => {
+      this.router.navigateByUrl("/members");
+    }, error => {
+      this.validationErrors = error;
+      console.log(this.registerForm.value);
+    });
   }
 
   cancel() {

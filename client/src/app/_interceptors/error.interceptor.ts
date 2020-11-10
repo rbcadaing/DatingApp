@@ -39,6 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                    ] */
                 throw modalStateErrors.flat();
               } else {
+                console.log("Rommel");
                 this.toastr.error(error.statusText, error.status)
               }
               break
