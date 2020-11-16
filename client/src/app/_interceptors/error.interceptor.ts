@@ -38,9 +38,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                      "dom"
                    ] */
                 throw modalStateErrors.flat();
+                //check if error is an object this is usually happens if we didnot specify error sting in the status code in the API
+              } else if (typeof (error.error) === "object") {
+                this.toastr.error(error.statusText, error.status);
               } else {
-                console.log("Rommel");
-                this.toastr.error(error.statusText, error.status)
+                this.toastr.error(error.error, error.status);
               }
               break
 
