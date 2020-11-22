@@ -25,7 +25,27 @@ namespace API.Controllers
             _tokenService = tokenService;
             _context = context;
         }
-
+        /// <summary>
+        /// Register New User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// /api/Account/register
+        /// 
+        /// Sample Request Body
+        /// 
+        /// {
+        ///   "username": "string",
+        ///   "knownAs": "string",
+        ///   "gender": "string",
+        ///   "dateOfBirth": "2020-11-22T07:45:12.097Z",
+        ///   "city": "string",
+        ///   "country": "string",
+        ///   "password": "string"
+        /// }
+        /// </remarks>
+        /// <param name="registerDto"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
