@@ -66,8 +66,17 @@ namespace API.Controllers
             return BadRequest("Failed to send message");
         }
 
-        [HttpGet]
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageParams"></param>
+        /// Username = {} used for retrieving outbox messages, enter sender username. leave blank or empty for inbox messages
+        /// Container = {} expected value inbox/outbox
+        /// Pagenumber = {} enter page number 
+        /// Pagesize = {} enter page size 
+        /// <returns></returns>
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
         {
             messageParams.Username = User.GetUsername();
@@ -75,6 +84,14 @@ namespace API.Controllers
 
             Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages);
             return Ok(messages);
+        }
+
+
+        [HttpGet("thread/{userName}")]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
+        {
+            var currentUsername = User.GetUsername();
+            return Ok(await _messageRepository.GetMessageThread(currentUsername, username));
         }
 
     }
