@@ -22,4 +22,14 @@ export class MessageService {
   getMesssageThread(username: string) {
     return this.http.get<Message[]>(this.baseUrl + "messages/thread/" + username);
   }
+
+  sendMessage(username: string, content: string) {
+    // when creating an object if the property name is the same with the value you can just add the variable name it is the same as content: content
+    //{ recipientUsername: username, content }
+    return this.http.post<Message>(this.baseUrl + "messages", { recipientUsername: username, content });
+  }
+
+  deleteMessage(id: number) {
+    return this.http.delete(this.baseUrl + "messages/" + id);
+  }
 }
