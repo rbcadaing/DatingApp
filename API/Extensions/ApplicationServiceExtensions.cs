@@ -90,6 +90,10 @@ namespace API.Extensions
                     {basicSecurityScheme,new string[]{ } }
                 });
 
+                // need to add csproj entry inside  <PropertyGroup> element
+                //    < GenerateDocumentationFile > true </ GenerateDocumentationFile >
+                //< NoWarn >$(NoWarn); 1591 </ NoWarn >
+
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
