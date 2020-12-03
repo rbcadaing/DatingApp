@@ -27,7 +27,7 @@
         </tr>
         <tr *ngFor="let message of messages" routerLink='{{container === "Outbox" 
         ? "/members/" + message.recipientUsername 
-        : "/members/" + message.senderUsername }}'>
+        : "/members/" + message.senderUsername }}' [queryParams]="{tab:3}">
             <td>{{message.content}}</td>
             <td>
                 <div *ngIf="container === 'Outbox'">
@@ -37,8 +37,7 @@
                     <strong>{{message.recipientUsername | titlecase}}</strong>
                 </div>
                 <div *ngIf="container !== 'Outbox'">
-                    <img class="img-circle rounded-circle mr-2"
-                        src="{{message.senderPhotoUrl || './assets/user.png'}}"
+                    <img class="img-circle rounded-circle mr-2" src="{{message.senderPhotoUrl || './assets/user.png'}}"
                         alt="{{message.senderUsername}}" />
                     <strong>{{message.senderUsername | titlecase}}</strong>
                 </div>
