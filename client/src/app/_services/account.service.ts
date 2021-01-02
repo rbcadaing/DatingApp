@@ -37,6 +37,12 @@ export class AccountService {
     );
   }
   setCurrentUser(user: User) {
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    console.log(roles);
+    //Check if user have an array or roles or a single role 
+  //  Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+
     localStorage.setItem("user", JSON.stringify(user));
     //next value to the observable buffer
     this.currentUserSource.next(user);
@@ -45,5 +51,11 @@ export class AccountService {
   logout() {
     localStorage.removeItem("user");
     this.currentUserSource.next(null);
+  }
+
+  getDecodedToken(token) {
+    // atob allows us to get the information in the token
+    // token is 3 part the header , payload and the signature what we need is the payload the second element of the array
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }
